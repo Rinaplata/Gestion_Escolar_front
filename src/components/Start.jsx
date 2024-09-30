@@ -63,7 +63,10 @@ export const Start = () => {
         <div className="flex flex-col justify-center">
           <div className="text-xl text-center text-gray-700 dark:text-white">
             Un proyecto de la{" "}
-            <span className="text-lime-600">Ingenieria en Software</span> by
+            <span className="text-[#8cc008]">
+              Tendencias de Desarrollo de Software
+            </span>{" "}
+            by
           </div>
 
           <div className="flex flex-wrap justify-center gap-5 mt-10 md:justify-around">

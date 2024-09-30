@@ -1,5 +1,4 @@
-import { Container } from "../components/Container";
-import { Start } from "../components/Start";
+import { Container, Start } from "../components";
 
 export const Home = () => {
   return (

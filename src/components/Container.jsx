@@ -14,5 +14,5 @@ export const Container = (props) => {
 Container.propTypes = {
   props: PropTypes.object,
   className: PropTypes.string,
-  children: PropTypes.object,
+  children: PropTypes.elementType,
 };
