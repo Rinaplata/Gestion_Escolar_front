@@ -6,12 +6,13 @@ import {
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import imageLogo1 from "../assets/school-bag.png";
 import { ProfileDrop } from "./ProfileDrop";
+import { Link } from "react-router-dom";
 
 const navigation = [
-  { name: "Home", href: "#", current: true },
-  { name: "About us", href: "#", current: false },
-  { name: "Teachers", href: "#", current: false },
-  { name: "Contac us", href: "#", current: false },
+  { name: "Home", href: "/home", current: true },
+  { name: "About us", href: "/about", current: false },
+  { name: "Teachers", href: "/teachers", current: false },
+  { name: "Contac us", href: "/contact", current: false },
 ];
 
 function classNames(...classes) {
@@ -68,16 +69,15 @@ export const Navbar = () => {
             {user ? (
               <ProfileDrop />
             ) : (
-              <a
-                key="Login"
-                href="#"
+              <Link
+                to="/login"
                 className={classNames(
                   "text-gray-300 hover:bg-gray-700 hover:text-white",
                   "rounded-md px-3 py-2 text-sm font-medium"
                 )}
               >
                 Login
-              </a>
+              </Link>
             )}
           </div>
         </div>
