@@ -1,21 +1,21 @@
 import { Input } from "../components";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   return (
-    <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+    <div className="flex items-center p-28 justify-center">
+      <div className="bg-white px-20 py-20 rounded-3xl border-9 border-transparent shadow-2xl sm:max-w-lg">
+        <div className="sm:max-w-md sm:w-full">
+          <h2 className="mt-8 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900">
             Sign in to your account
           </h2>
         </div>
-
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <div className="mt-10 sm:mx-auto sm:w-full">
           <form action="#" method="POST" className="space-y-6">
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className="block text-base font-medium leading-6 text-gray-900"
               >
                 Email address
               </label>
@@ -35,7 +35,7 @@ export default function Login() {
               <div className="flex items-center justify-between">
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
+                  className="block text-base font-medium leading-6 text-gray-900"
                 >
                   Password
                 </label>
@@ -64,15 +64,15 @@ export default function Login() {
 
           <p className="mt-10 text-center text-sm text-gray-500">
             Not a member?{" "}
-            <a
-              href="#"
+            <Link
+              to="/SignUp"
               className="font-semibold leading-6 text-[#8dc109] hover:text-[#4f6d02]"
             >
               Sign Up
-            </a>
+            </Link>
           </p>
         </div>
       </div>
-    </>
+    </div>
   );
 }

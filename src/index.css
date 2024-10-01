@@ -3,8 +3,14 @@
 @tailwind utilities;
 
 @layer base {
-    html,
-    body {
-        @apply dark:bg-gray-900;
-    }
+  html,
+  body {
+    margin: 0;
+    background: #f1f1f1;
+    @apply dark:bg-gray-900; 
+    @apply bg-white; 
+    @apply text-gray-900; 
+    @apply antialiased; 
+    font-family: 'Inter', sans-serif;
   }
+}
