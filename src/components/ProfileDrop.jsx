@@ -1,4 +1,9 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
 export const ProfileDrop = () => {
   return (
@@ -37,12 +42,14 @@ export const ProfileDrop = () => {
             </a>
           </MenuItem>
           <MenuItem>
-            <a
-              href="#"
-              className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
+            <Link
+              to="/home"
+              className={classNames(
+                "block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
+              )}
             >
               Sign out
-            </a>
+            </Link>
           </MenuItem>
         </MenuItems>
       </Menu>
