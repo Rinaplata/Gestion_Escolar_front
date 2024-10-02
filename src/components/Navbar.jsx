@@ -80,21 +80,13 @@ export const Navbar = ({ onLogout }) => {
           {/* Header Section */}
           {location.pathname.includes("/adminLayout") && (
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-              <button className="text-gray-600 hover:text-primaryAtuuja relative mr-4">
+              <button className="text-gray-300 hover:text-white relative mr-4">
                 <BellIcon className="h-8 w-8" />
                 <span className="absolute -top-1 -right-2 inline-flex h-3 w-3 rounded-full bg-red-500" />
               </button>
 
               <div className="flex items-center gap-4">
-                <NavLink
-                  to="/profile"
-                  className="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white"
-                >
-                  <UserCircleIcon className="h-8 w-8" />
-                  <span className="ml-2">Perfil</span>
-                  <ProfileDrop></ProfileDrop>
-
-                </NavLink>
+                 <ProfileDrop></ProfileDrop>
               </div>
             </div>
           )}
