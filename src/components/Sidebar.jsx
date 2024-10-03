@@ -100,8 +100,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               {/* <!-- Menu Item Estudiantes --> */}
               <li>
                 <NavLink
-                  to="/students"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:text-primaryAtuuja dark:hover:bg-meta-4 ${
+    to="/adminLayout/students"
+    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:text-primaryAtuuja dark:hover:bg-meta-4 ${
                     pathname.includes('students') ? 'text-primaryAtuuja-500' : 'text-gray-500'
                   }`}
                 >
