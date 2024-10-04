@@ -143,12 +143,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                       Horarios y Asignaciones de cursos
                     </NavLink>
                   </li>
+                  <li>
+                    <NavLink
+                      to="/adminLayout/report"
+                      className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
+                    >
+                      Reporte General 
+                    </NavLink>
+                  </li>
                 </ul>
               )}
             </li>
 
             {/* Menu Item Profesores */}
-            <li>
             <li className="relative">
               <button
                 onClick={() => setTeacherMenuOpen(!isteachersMenuOpen)}
@@ -185,10 +192,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 </ul>
               )}
             </li>
-            </li>
 
             {/* Menu Item Cursos */}
-            <li>
             <li className="relative">
               <button
                 onClick={() => setCourseMenuOpen(!isCourseMenuOpen)}
@@ -216,7 +221,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   </li>
                 </ul>
               )}
-            </li>
             </li>
           </ul>
         </div>
