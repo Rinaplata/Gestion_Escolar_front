@@ -7,7 +7,7 @@ const ReusableTable = ({ data = [], columns = [], fileName }) => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-4">Gestión de Usuarios</h1>
+      <h1 className="text-2xl font-bold mb-4">Gestión de Estudiantes</h1>
       <table className="min-w-full bg-white border border-gray-200">
         <thead>
           <tr>
