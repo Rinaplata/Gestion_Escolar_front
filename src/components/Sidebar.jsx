@@ -110,16 +110,24 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 }`}
               >
                 <UserIcon className="h-6 w-6 text-gray-500 group-hover:text-primaryAtuuja" />
-                <span>Gestión de Estudiantes</span>
+                <span>Gestión Estudiantes</span>
                 <ChevronDownIcon className={`h-5 w-5 ml-auto transform ${isStudentMenuOpen ? "rotate-180" : ""}`} />
               </button>
 
               {/* Submenús */}
               {isStudentMenuOpen && (
                 <ul className="pr-4 mt-1 flex flex-col space-y-1 bg-white dark:bg-meta-4 rounded-lg shadow-lg">
+                                    <li>
+                    <NavLink
+                      to="/adminLayout/students"
+                      className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
+                    >
+                      Estudiantes
+                    </NavLink>
+                  </li>
                   <li>
                     <NavLink
-                      to="/adminLayout/students/grades"
+                      to="/adminLayout/grades"
                       className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
                     >
                       Calificaciones

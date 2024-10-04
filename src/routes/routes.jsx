@@ -6,6 +6,7 @@ import  Login  from '../api/Login'
 import  {Signup}  from '../api/Signup'
 import { AdminLayout } from '../components/AdminLayout';
 import UserStudents from '../components/students/UserStudents'
+import GradesStudents from '../components/students/GradesStudents'
 
 
 const AppRoutes = () => {
@@ -16,6 +17,7 @@ const AppRoutes = () => {
             <Route path="/signup" element={<Signup />} />
             <Route path="/adminLayout" element={<AdminLayout />}>
               <Route path="students" element={<UserStudents />} />
+              <Route path="grades" element={<GradesStudents />} />
             {/* Puedes agregar más rutas hijas aquí */}
             </Route>
         </Routes>
