@@ -56,6 +56,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   }, [sidebarExpanded]);
 
   const [isStudentMenuOpen, setStudentMenuOpen] = useState(false);
+  const [isteachersMenuOpen, setTeacherMenuOpen] = useState(false);
+  const [isCourseMenuOpen, setCourseMenuOpen] = useState(false);
 
   return (
     <aside
@@ -109,7 +111,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     : "text-gray-500"
                 }`}
               >
-                <UserIcon className="h-6 w-6 text-gray-500 group-hover:text-primaryAtuuja" />
+                <AcademicCapIcon className="h-6 w-6 text-gray-500 group-hover:text-primaryAtuuja" />
                 <span>Gestión Estudiantes</span>
                 <ChevronDownIcon className={`h-5 w-5 ml-auto transform ${isStudentMenuOpen ? "rotate-180" : ""}`} />
               </button>
@@ -135,18 +137,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   </li>
                   <li>
                     <NavLink
-                      to="/adminLayout/students/schedules"
+                      to="/adminLayout/schedule"
                       className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
                     >
-                      Horarios y Asignaciones
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/adminLayout/students/professors"
-                      className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
-                    >
-                      Profesores y Carga Académica
+                      Horarios y Asignaciones de cursos
                     </NavLink>
                   </li>
                 </ul>
@@ -155,32 +149,74 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
             {/* Menu Item Profesores */}
             <li>
-              <NavLink
-                to="/teachers"
-                className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:text-primaryAtuuja dark:hover:bg-meta-4 ${
-                  pathname.includes("teachers")
+            <li className="relative">
+              <button
+                onClick={() => setTeacherMenuOpen(!isteachersMenuOpen)}
+                className={`group relative flex items-center gap-2.5 w-full rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:text-primaryAtuuja dark:hover:bg-meta-4 ${
+                  pathname.includes("students")
                     ? "text-primaryAtuuja-500"
                     : "text-gray-500"
                 }`}
               >
-                <AcademicCapIcon className="h-6 w-6 text-gray-500 group-hover:text-primaryAtuuja" />
-                <span>Gestión de Profesores</span>
-              </NavLink>
+                <UserIcon className="h-6 w-6 text-gray-500 group-hover:text-primaryAtuuja" />
+                <span>Gestión Profesores</span>
+                <ChevronDownIcon className={`h-5 w-5 ml-auto transform ${isteachersMenuOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              {/* Submenús */}
+              {isteachersMenuOpen && (
+                <ul className="pr-4 mt-1 flex flex-col space-y-1 bg-white dark:bg-meta-4 rounded-lg shadow-lg">
+                                    <li>
+                    <NavLink
+                      to="/adminLayout/teachers"
+                      className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
+                    >
+                      Profesores
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/adminLayout/grades"
+                      className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
+                    >
+                      Asignación de cursos
+                    </NavLink>
+                  </li>
+                </ul>
+              )}
+            </li>
             </li>
 
             {/* Menu Item Cursos */}
             <li>
-              <NavLink
-                to="/courses"
-                className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:text-primaryAtuuja dark:hover:bg-meta-4 ${
-                  pathname.includes("courses")
+            <li className="relative">
+              <button
+                onClick={() => setCourseMenuOpen(!isCourseMenuOpen)}
+                className={`group relative flex items-center gap-2.5 w-full rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:text-primaryAtuuja dark:hover:bg-meta-4 ${
+                  pathname.includes("students")
                     ? "text-primaryAtuuja-500"
                     : "text-gray-500"
                 }`}
               >
-                <ClipboardDocumentIcon className="h-6 w-6 text-gray-500 group-hover:text-primaryAtuuja" />
-                <span>Gestión de Cursos</span>
-              </NavLink>
+                <DocumentTextIcon className="h-6 w-6 text-gray-500 group-hover:text-primaryAtuuja" />
+                <span>Gestión de cursos</span>
+                <ChevronDownIcon className={`h-5 w-5 ml-auto transform ${isCourseMenuOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              {/* Submenús */}
+              {isCourseMenuOpen && (
+                <ul className="pr-4 mt-1 flex flex-col space-y-1 bg-white dark:bg-meta-4 rounded-lg shadow-lg">
+                                    <li>
+                    <NavLink
+                      to="/adminLayout/teachers"
+                      className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
+                    >
+                      cursos
+                    </NavLink>
+                  </li>
+                </ul>
+              )}
+            </li>
             </li>
           </ul>
         </div>
