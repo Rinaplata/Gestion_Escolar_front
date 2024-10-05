@@ -1,17 +1,17 @@
 import api from "./index.js";
 
-const login = async (credentials) => {
+const getRoles = async () => {
   try {
-    const response = await api.post("login/", credentials);
+    const response = await api.get("roles/");
 
     return response.data;
   } catch (error) {
     console.error(
-      "Error en el login",
+      "Error al obtener roles",
       error.response ? error.response.data : error.message
     );
     throw error;
   }
 };
 
-export default login;
+export default getRoles;
