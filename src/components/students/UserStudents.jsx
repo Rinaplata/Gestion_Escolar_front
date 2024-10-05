@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   PencilSquareIcon,
   TrashIcon,
@@ -8,52 +8,56 @@ import ReusableTable from "../ReusableTable";
 import ReusableModal from "../ReusableModal";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
+import {
+  getStudents,
+  postStudents,
+  putStudents,
+  deleteStudents,
+} from "../../services/studenstService";
 
 const UserStudents = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentStudent, setCurrentStudent] = useState(null);
+  const [students, setStudents] = useState([]);
   const [newStudent, setNewStudent] = useState({
     id: "",
-    fullName: "",
-    birthDate: "",
-    gender: "",
+    full_name: "",
+    date_birth: "",
+    gendre: "",
     address: "",
     email: "",
     phone: "",
-    grade: "",
+    school_grade: "",
   });
 
-  const [stdudents, setUsersStdudents] = useState([
-    {
-      fullName: "Juan Pérez",
-      birthDate: "1990-05-20",
-      gender: "Masculino",
-      address: "Calle 123, Ciudad",
-      email: "juan.perez@example.com",
-      phone: "1234567890",
-      grade: "Prof",
-    },
-    {
-      fullName: "María García",
-      birthDate: "2005-08-15",
-      gender: "Femenino",
-      address: "Carrera 45, Ciudad",
-      email: "maria.garcia@example.com",
-      phone: "0987654321",
-      grade: "profesional",
-    },
-  ]);
+  // Fetch students from API
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const data = await getStudents();
+        setStudents(data);
+      } catch (error) {
+        console.error("Error al obtener los estudiantes", error);
+      }
+    };
+    fetchStudents();
+  }, []);
 
   const handleUpdate = (id) => {
-    const userToEdit = stdudents.find((user) => user.id === id);
-    setCurrentStudent(userToEdit);
-    setNewStudent(userToEdit);
+    const studentToEdit = students.find((student) => student.id === id);
+    setCurrentStudent(studentToEdit);
+    setNewStudent(studentToEdit);
     openModal();
   };
 
-  const handleDelete = (id) => {
-    setUsersStdudents(stdudents.filter((user) => user.id !== id));
-    console.log(`Eliminar usuario con ID: ${id}`);
+  const handleDelete = async (id) => {
+    try {
+      await deleteStudents(id);
+      setStudents(students.filter((student) => student.id !== id));
+      console.log(`Eliminar estudiante con ID: ${id}`);
+    } catch (error) {
+      console.error("Error al eliminar el estudiante", error);
+    }
   };
 
   const openModal = () => setIsModalOpen(true);
@@ -67,49 +71,56 @@ const UserStudents = () => {
     setNewStudent({ ...newStudent, [name]: value });
   };
 
-  const handleAddOrUpdateStudent = (e) => {
+  const handleAddOrUpdateStudent = async (e) => {
     e.preventDefault();
     if (
-      newStudent.fullName &&
-      newStudent.birthDate &&
-      newStudent.gender &&
+      newStudent.full_name &&
+      newStudent.date_birth &&
+      newStudent.gendre &&
       newStudent.address &&
       newStudent.email &&
       newStudent.phone &&
-      newStudent.grade
+      newStudent.school_grade
     ) {
-      if (currentStudent) {
-        setUsersStdudents(
-          stdudents.map((user) =>
-            user.id === currentStudent.id ? newStudent : user
-          )
-        );
-      } else {
-        setUsersStdudents([...stdudents, { ...newStudent, id: stdudents.length + 1 }]);
+      try {
+        if (currentStudent) {
+          await putStudents(newStudent);
+          setStudents(
+            students.map((student) =>
+              student.id === currentStudent.id ? newStudent : student
+            )
+          );
+        } else {
+          newStudent.id = students?.length + 1;
+          const createdStudent = await postStudents(newStudent);
+          setStudents([...students, createdStudent]);
+        }
+        closeModal();
+        setNewStudent({
+          full_name: "",
+          date_birth: "",
+          gendre: "",
+          address: "",
+          email: "",
+          phone: "",
+          school_grade: "",
+        });
+      } catch (error) {
+        console.error("Error al agregar o actualizar el estudiante", error);
       }
-      closeModal();
-      setNewStudent({
-        fullName: "",
-        birthDate: "",
-        gender: "",
-        address: "",
-        email: "",
-        phone: "",
-        grade: ""
-      });
     } else {
       alert("Por favor completa todos los campos.");
     }
   };
 
   const columns = [
-    { label: "Nombre Completo", accessor: "fullName" },
-    { label: "Fecha de Nacimiento", accessor: "birthDate" },
-    { label: "Genero", accessor: "gender" },
+    { label: "Nombre Completo", accessor: "full_name" },
+    { label: "Fecha de Nacimiento", accessor: "date_birth" },
+    { label: "Genero", accessor: "gendre" },
     { label: "Dirección", accessor: "address" },
     { label: "Correo Electrónico", accessor: "email" },
     { label: "Número de Teléfono", accessor: "phone" },
-    { label: "Grado", accessor: "grade" },
+    { label: "Grado", accessor: "school_grade" },
     {
       label: "Acciones",
       accessor: "acciones",
@@ -131,47 +142,45 @@ const UserStudents = () => {
       ),
     },
   ];
-  
+
   const downloadPDF = () => {
     const doc = new jsPDF();
     doc.text("Gestión de Estudiantes", 20, 10);
 
-    // Definir las columnas para la tabla del PDF
     const tableColumn = [
-        "ID", 
-        "Nombre Completo", 
-        "Correo Electrónico", 
-        "Fecha de Nacimiento", 
-        "Género", 
-        "Dirección", 
-        "Número de Teléfono", 
-        "Grado"
+      "ID",
+      "Nombre Completo",
+      "Correo Electrónico",
+      "Fecha de Nacimiento",
+      "Género",
+      "Dirección",
+      "Número de Teléfono",
+      "Grado",
     ];
     const tableRows = [];
 
-    // Recorrer los usuarios y preparar los datos para la tabla
-    stdudents.forEach((stdudents) => {
-        const userData = [
-          stdudents.id, 
-          stdudents.fullName, 
-          stdudents.email, 
-          stdudents.birthDate, 
-          stdudents.gender, 
-          stdudents.address, 
-          stdudents.phone, 
-          stdudents.grade
-        ];
-        tableRows.push(userData);
+    students.forEach((student) => {
+      const studentData = [
+        student.id,
+        student.full_name,
+        student.email,
+        student.date_birth,
+        student.gendre,
+        student.address,
+        student.phone,
+        student.school_grade,
+      ];
+      tableRows.push(studentData);
     });
 
     doc.autoTable({
-        head: [tableColumn],
-        body: tableRows,
-        startY: 20,
+      head: [tableColumn],
+      body: tableRows,
+      startY: 20,
     });
 
     doc.save("estudiantes.pdf");
-};
+  };
 
   return (
     <div className="p-6">
@@ -203,42 +212,46 @@ const UserStudents = () => {
             </label>
             <input
               type="text"
-              name="fullName"
-              value={newStudent.fullName}
+              name="full_name"
+              value={newStudent.full_name}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               placeholder="Ingresa el nombre completo"
               required
             />
           </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Fecha de Nacimiento
             </label>
             <input
               type="date"
-              name="birthDate"
-              value={newStudent.birthDate}
+              name="date_birth"
+              value={newStudent.date_birth}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="Ingresa la fecha de nacimiento"
               required
             />
           </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Género
             </label>
-            <input
-              type="text"
-              name="gender"
-              value={newStudent.gender}
+            <select
+              name="gendre"
+              value={newStudent.gendre}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="Ingresa el género"
-              required
-            />
+            >
+              <option value="">Selecciona el género</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Otro">Otro</option>
+            </select>
           </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Dirección
@@ -250,6 +263,20 @@ const UserStudents = () => {
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               placeholder="Ingresa la dirección"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Teléfono
+            </label>
+            <input
+              type="tel"
+              name="phone"
+              value={newStudent.phone}
+              onChange={handleInputChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              placeholder="Ingresa el teléfono"
               required
             />
           </div>
@@ -269,32 +296,19 @@ const UserStudents = () => {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Número de Teléfono
-            </label>
-            <input
-              type="tel"
-              name="phone"
-              value={newStudent.phone}
-              onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="Ingresa el número de teléfono"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Grado
+              Grado Escolar
             </label>
             <input
               type="text"
-              name="grade"
-              value={newStudent.grade}
+              name="school_grade"
+              value={newStudent.school_grade}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="Ingresa el grado"
+              placeholder="Ingresa el grado escolar"
               required
             />
           </div>
+
           <div className="mt-4">
             <button
               type="submit"
@@ -305,10 +319,11 @@ const UserStudents = () => {
           </div>
         </form>
       </ReusableModal>
+
       <ReusableTable
         title="Gestión de estudiantes"
         columns={columns}
-        data={stdudents}
+        data={students}
       />
     </div>
   );
