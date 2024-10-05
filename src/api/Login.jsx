@@ -12,16 +12,21 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       const credentials = { username, password };
       const response = await login(credentials);
-      console.log(response + "siiii lo haceeeee");
-      localStorage.setItem("token", response.data.token);
-      navigate("/adminLayout");
+      
+      if (response.access) {
+        localStorage.setItem("token", response.access);
+        navigate("/adminLayout");
+      } else {
+        setError("No se pudo autenticar. Token no recibido.");
+      }
     } catch (error) {
-      setError("credenciales incorrectas re odioooooo");
+      setError("Credenciales incorrectas");
     }
+
   };
 
   return (
