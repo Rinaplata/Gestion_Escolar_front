@@ -8,7 +8,12 @@ import ReusableTable from "../ReusableTable";
 import ReusableModal from "../ReusableModal";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-import { getTeachers, postTeachers, putTeacher, deleteTeacher } from "../../services/teacherService";
+import {
+  getTeachers,
+  postTeachers,
+  putTeacher,
+  deleteTeacher,
+} from "../../services/teacherService";
 
 const UsersTeachers = () => {
   const [profesores, setProfesores] = useState(null);
@@ -20,7 +25,7 @@ const UsersTeachers = () => {
       setProfesores(responseProfesores);
       setLoading(false);
     };
-   
+
     getProfesores();
   }, []);
 
@@ -89,7 +94,10 @@ const UsersTeachers = () => {
         );
       } else {
         crearProfesores(newProfesor);
-        setProfesores([...profesores, { ...newProfesor, id: profesores.length + 1 }]);
+        setProfesores([
+          ...profesores,
+          { ...newProfesor, id: profesores.length + 1 },
+        ]);
       }
       closeModal();
       setNewProfesor({
@@ -102,20 +110,25 @@ const UsersTeachers = () => {
         email: "",
         department: "",
       });
+      window.location.reload();
     } else {
       alert("Por favor completa todos los campos.");
     }
   };
 
   const handleUpdate = (id) => {
-    const assignmentToEdit = profesores.find((assignment) => assignment.id === id);
+    const assignmentToEdit = profesores.find(
+      (assignment) => assignment.id === id
+    );
     setCurrentCourse(assignmentToEdit);
     setNewProfesor(assignmentToEdit);
     openModal();
   };
 
   const handleDelete = (id) => {
-    const cursoEliminado = profesores.filter((assignment) => assignment.id !== id);
+    const cursoEliminado = profesores.filter(
+      (assignment) => assignment.id !== id
+    );
     if (cursoEliminado.length !== profesores.length) {
       deleteTeacher(id);
       setProfesores(cursoEliminado);
@@ -219,7 +232,7 @@ const UsersTeachers = () => {
         title={currentProfesores ? "Actualizar Profesor" : "Crear Profesor"}
       >
         <form onSubmit={handleAddOrUpdateAssignment} className="space-y-4 m-3">
-        <div>
+          <div>
             <label className="block text-sm font-medium text-gray-700">
               Documento Profesor
             </label>
@@ -337,11 +350,7 @@ const UsersTeachers = () => {
         </form>
       </ReusableModal>
       {!isLoading ? (
-        <ReusableTable
-          title="Profesores"
-          columns={columns}
-          data={profesores}
-        />
+        <ReusableTable title="Profesores" columns={columns} data={profesores} />
       ) : (
         <p>Loading...</p>
       )}

@@ -5,7 +5,7 @@ import {
   AcademicCapIcon,
   ClipboardDocumentIcon,
   DocumentTextIcon,
-  ChevronDownIcon
+  ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
@@ -99,132 +99,144 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
         {/* <!-- Sidebar Menu --> */}
         <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
-        <div>
-          <ul className="mb-6 flex flex-col gap-1.5">
-            {/* Menu Item Estudiantes */}
-            <li className="relative">
-              <button
-                onClick={() => setStudentMenuOpen(!isStudentMenuOpen)}
-                className={`group relative flex items-center gap-2.5 w-full rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:text-primaryAtuuja dark:hover:bg-meta-4 ${
-                  pathname.includes("students")
-                    ? "text-primaryAtuuja-500"
-                    : "text-gray-500"
-                }`}
-              >
-                <AcademicCapIcon className="h-6 w-6 text-gray-500 group-hover:text-primaryAtuuja" />
-                <span>Gestión Estudiantes</span>
-                <ChevronDownIcon className={`h-5 w-5 ml-auto transform ${isStudentMenuOpen ? "rotate-180" : ""}`} />
-              </button>
+          <div>
+            <ul className="mb-6 flex flex-col gap-1.5">
+              {/* Menu Item Estudiantes */}
+              <li className="relative">
+                <button
+                  onClick={() => setStudentMenuOpen(!isStudentMenuOpen)}
+                  className={`group relative flex items-center gap-2.5 w-full rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:text-primaryAtuuja dark:hover:bg-meta-4 ${
+                    pathname.includes("students")
+                      ? "text-primaryAtuuja-500"
+                      : "text-gray-500"
+                  }`}
+                >
+                  <AcademicCapIcon className="h-6 w-6 text-gray-500 group-hover:text-primaryAtuuja" />
+                  <span>Gestión Estudiantes</span>
+                  <ChevronDownIcon
+                    className={`h-5 w-5 ml-auto transform ${
+                      isStudentMenuOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
 
-              {/* Submenús */}
-              {isStudentMenuOpen && (
-                <ul className="pr-4 mt-1 flex flex-col space-y-1 bg-white dark:bg-meta-4 rounded-lg shadow-lg">
-                                    <li>
-                    <NavLink
-                      to="/adminLayout/students"
-                      className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
-                    >
-                      Estudiantes
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/adminLayout/grades"
-                      className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
-                    >
-                      Calificaciones
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/adminLayout/schedule"
-                      className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
-                    >
-                      Horarios y Asignaciones de cursos
-                    </NavLink>
-                  </li>
-                  <li>
+                {/* Submenús */}
+                {isStudentMenuOpen && (
+                  <ul className="pr-4 mt-1 flex flex-col space-y-1 bg-white dark:bg-meta-4 rounded-lg shadow-lg">
+                    <li>
+                      <NavLink
+                        to="/adminLayout/students"
+                        className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
+                      >
+                        Estudiantes
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        to="/adminLayout/grades"
+                        className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
+                      >
+                        Calificaciones
+                      </NavLink>
+                    </li>
+                    {/* <li>
+                      <NavLink
+                        to="/adminLayout/schedule"
+                        className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
+                      >
+                        Horarios y Asignaciones de cursos
+                      </NavLink>
+                    </li> */}
+                    {/* <li>
                     <NavLink
                       to="/adminLayout/report"
                       className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
                     >
                       Reporte General 
                     </NavLink>
-                  </li>
-                </ul>
-              )}
-            </li>
+                  </li> */}
+                  </ul>
+                )}
+              </li>
 
-            {/* Menu Item Profesores */}
-            <li className="relative">
-              <button
-                onClick={() => setTeacherMenuOpen(!isteachersMenuOpen)}
-                className={`group relative flex items-center gap-2.5 w-full rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:text-primaryAtuuja dark:hover:bg-meta-4 ${
-                  pathname.includes("students")
-                    ? "text-primaryAtuuja-500"
-                    : "text-gray-500"
-                }`}
-              >
-                <UserIcon className="h-6 w-6 text-gray-500 group-hover:text-primaryAtuuja" />
-                <span>Gestión Profesores</span>
-                <ChevronDownIcon className={`h-5 w-5 ml-auto transform ${isteachersMenuOpen ? "rotate-180" : ""}`} />
-              </button>
+              {/* Menu Item Profesores */}
+              <li className="relative">
+                <button
+                  onClick={() => setTeacherMenuOpen(!isteachersMenuOpen)}
+                  className={`group relative flex items-center gap-2.5 w-full rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:text-primaryAtuuja dark:hover:bg-meta-4 ${
+                    pathname.includes("students")
+                      ? "text-primaryAtuuja-500"
+                      : "text-gray-500"
+                  }`}
+                >
+                  <UserIcon className="h-6 w-6 text-gray-500 group-hover:text-primaryAtuuja" />
+                  <span>Gestión Profesores</span>
+                  <ChevronDownIcon
+                    className={`h-5 w-5 ml-auto transform ${
+                      isteachersMenuOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
 
-              {/* Submenús */}
-              {isteachersMenuOpen && (
-                <ul className="pr-4 mt-1 flex flex-col space-y-1 bg-white dark:bg-meta-4 rounded-lg shadow-lg">
-                                    <li>
-                    <NavLink
-                      to="/adminLayout/teachers"
-                      className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
-                    >
-                      Profesores
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/adminLayout/grades"
-                      className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
-                    >
-                      Asignación de cursos
-                    </NavLink>
-                  </li>
-                </ul>
-              )}
-            </li>
+                {/* Submenús */}
+                {isteachersMenuOpen && (
+                  <ul className="pr-4 mt-1 flex flex-col space-y-1 bg-white dark:bg-meta-4 rounded-lg shadow-lg">
+                    <li>
+                      <NavLink
+                        to="/adminLayout/teachers"
+                        className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
+                      >
+                        Profesores
+                      </NavLink>
+                    </li>
+                    {/* <li>
+                      <NavLink
+                        to="/adminLayout/grades"
+                        className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
+                      >
+                        Asignación de cursos
+                      </NavLink>
+                    </li> */}
+                  </ul>
+                )}
+              </li>
 
-            {/* Menu Item Cursos */}
-            <li className="relative">
-              <button
-                onClick={() => setCourseMenuOpen(!isCourseMenuOpen)}
-                className={`group relative flex items-center gap-2.5 w-full rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:text-primaryAtuuja dark:hover:bg-meta-4 ${
-                  pathname.includes("students")
-                    ? "text-primaryAtuuja-500"
-                    : "text-gray-500"
-                }`}
-              >
-                <DocumentTextIcon className="h-6 w-6 text-gray-500 group-hover:text-primaryAtuuja" />
-                <span>Gestión de cursos</span>
-                <ChevronDownIcon className={`h-5 w-5 ml-auto transform ${isCourseMenuOpen ? "rotate-180" : ""}`} />
-              </button>
+              {/* Menu Item Cursos */}
+              <li className="relative">
+                <button
+                  onClick={() => setCourseMenuOpen(!isCourseMenuOpen)}
+                  className={`group relative flex items-center gap-2.5 w-full rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:text-primaryAtuuja dark:hover:bg-meta-4 ${
+                    pathname.includes("students")
+                      ? "text-primaryAtuuja-500"
+                      : "text-gray-500"
+                  }`}
+                >
+                  <DocumentTextIcon className="h-6 w-6 text-gray-500 group-hover:text-primaryAtuuja" />
+                  <span>Gestión de cursos</span>
+                  <ChevronDownIcon
+                    className={`h-5 w-5 ml-auto transform ${
+                      isCourseMenuOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
 
-              {/* Submenús */}
-              {isCourseMenuOpen && (
-                <ul className="pr-4 mt-1 flex flex-col space-y-1 bg-white dark:bg-meta-4 rounded-lg shadow-lg">
-                                    <li>
-                    <NavLink
-                      to="courses/"
-                      className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
-                    >
-                      Cursos
-                    </NavLink>
-                  </li>
-                </ul>
-              )}
-            </li>
-          </ul>
-        </div>
-      </nav>
+                {/* Submenús */}
+                {isCourseMenuOpen && (
+                  <ul className="pr-4 mt-1 flex flex-col space-y-1 bg-white dark:bg-meta-4 rounded-lg shadow-lg">
+                    <li>
+                      <NavLink
+                        to="courses/"
+                        className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
+                      >
+                        Cursos
+                      </NavLink>
+                    </li>
+                  </ul>
+                )}
+              </li>
+            </ul>
+          </div>
+        </nav>
         {/* <!-- Sidebar Menu --> */}
       </div>
     </aside>
