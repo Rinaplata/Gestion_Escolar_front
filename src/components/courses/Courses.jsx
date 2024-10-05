@@ -14,7 +14,7 @@ import {
   postCourses,
   putCourses,
 } from "../../services/coursesService";
-import { getOneTeacher } from "../../services/teacherService";
+import { getTeachers } from "../../services/teacherService";
 
 const CourseManagement = () => {
   const [cursos, setCursos] = useState(null);
@@ -24,7 +24,7 @@ const CourseManagement = () => {
   useEffect(() => {
     const getCursosYTeachers = async () => {
       const responseCursos = await getCourses();
-      const responseProfesores = await getOneTeacher();
+      const responseProfesores = await getTeachers();
       setProfesores(responseProfesores);
       const dataCursos = responseCursos.map((cursos) => {
         const profesorDatos = responseProfesores.find(
