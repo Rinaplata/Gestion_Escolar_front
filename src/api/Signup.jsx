@@ -45,7 +45,7 @@ export const Signup = () => {
 
     fetchRoles();
   }, []);
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -227,11 +227,12 @@ export const Signup = () => {
                 }
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
               >
-                {roles.map((role) => (
+                <option value="">Selecciona un rol?</option>
+                {roles ? roles.map((role) => (
                   <option key={role.id} value={role.id}>
                     {role.name}
                   </option>
-                ))}
+                )): null}
               </select>
             </div>
 
