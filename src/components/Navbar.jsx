@@ -15,7 +15,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { ProfileDrop } from "./ProfileDrop";
 
 const navigation = [
-  { name: "Home", href: "/home", current: true },
+  { name: "Home", href: "/", current: true },
   { name: "About us", href: "/about", current: false },
   { name: "Teachers", href: "/teachers", current: false },
   { name: "Contact us", href: "/contact", current: false },
@@ -63,7 +63,7 @@ export const Navbar = ({ onLogout }) => {
             {user ? (
               <ProfileDrop />
             ) : (
-              location.pathname === "/home" && (
+              location.pathname === "/" && (
                 <Link
                   to="/login"
                   className={classNames(

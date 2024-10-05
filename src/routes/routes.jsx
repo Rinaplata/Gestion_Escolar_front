@@ -14,7 +14,7 @@ import ScheduleAssignment from '../components/students/ScheduleAssignment'
 const AppRoutes = () => {
     return (
         <Routes>
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/adminLayout" element={<AdminLayout />}>
