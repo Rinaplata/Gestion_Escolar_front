@@ -213,10 +213,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 <ul className="pr-4 mt-1 flex flex-col space-y-1 bg-white dark:bg-meta-4 rounded-lg shadow-lg">
                                     <li>
                     <NavLink
-                      to="/adminLayout/teachers"
+                      to="courses/"
                       className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
                     >
-                      cursos
+                      Cursos
                     </NavLink>
                   </li>
                 </ul>

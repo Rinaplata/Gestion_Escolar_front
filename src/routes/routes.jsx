@@ -8,7 +8,8 @@ import { AdminLayout } from '../components/AdminLayout';
 import UserStudents from '../components/students/UserStudents'
 import GradesStudents from '../components/students/GradesStudents'
 import ScheduleAssignment from '../components/students/ScheduleAssignment'
-/* import Report from '../components/students/Report' */
+import CourseManagement from '../components/courses/Courses';
+// import StudentReport from '../components/students/Report'
 
 
 const AppRoutes = () => {
@@ -21,8 +22,9 @@ const AppRoutes = () => {
               <Route path="students" element={<UserStudents />} />
               <Route path="grades" element={<GradesStudents />} />
               <Route path="schedule" element={<ScheduleAssignment />} />
-{/*               <Route path="report" element={<Report />} />
- */}            {/* Puedes agregar más rutas hijas aquí */}
+              <Route path="courses" element={<CourseManagement />} />
+               {/* <Route path="report" element={<Report />} /> */}
+            {/* Puedes agregar más rutas hijas aquí */}
             </Route>
         </Routes>
     );
