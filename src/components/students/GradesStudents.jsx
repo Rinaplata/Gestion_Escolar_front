@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   PencilSquareIcon,
   TrashIcon,
@@ -8,45 +8,55 @@ import ReusableTable from "../ReusableTable";
 import ReusableModal from "../ReusableModal";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
+import {postCalificacion, getCalificacion, updateCalificacion, deleteCalificacion}  from "../../services/GradesStudent"
 
 const GradesStudents = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentGrade, setCurrentGrade] = useState(null);
   const [newGrade, setNewGrade] = useState({
-    id: "",
-    studentId: "",
-    courseId: "",
-    grade: "",
-    evaluationDate: "",
+    student_id: "",
+    course_id: "",
+    qualification: "",
+    evaluation_date: "",
   });
 
+
   const [grades, setGrades] = useState([
-    {
-      id: 1,
-      studentId: "101",
-      courseId: "202",
-      grade: "85",
-      evaluationDate: "2024-09-15",
-    },
-    {
-      id: 2,
-      studentId: "102",
-      courseId: "203",
-      grade: "90",
-      evaluationDate: "2024-09-20",
-    },
+      
   ]);
 
+  useEffect(() => {
+    const obtenerCalificacion = async ()=>{
+      const calificacionAsignada = await getCalificacion()
+      console.log(calificacionAsignada)
+      setGrades(calificacionAsignada)
+   }
+    obtenerCalificacion()
+    //console.log(grades)
+  }, [])
+
+  const postQualification = async ()=>{
+    await postCalificacion(newGrade)
+  }
+
+  const actulizarCalificacion = async (actualizar)=>{
+    await updateCalificacion(actualizar)
+  }
 
   const handleUpdate = (id) => {
     const gradeToEdit = grades.find((grade) => grade.id === id);
+    
     setCurrentGrade(gradeToEdit);
     setNewGrade(gradeToEdit);
     openModal();
   };
 
   const handleDelete = (id) => {
-    setGrades(grades.filter((grade) => grade.id !== id));
+    const calificacionEliminada = grades.filter((grade)=> grade.id !== id)
+    if(calificacionEliminada.length !== grades.length){
+      deleteCalificacion(id);
+      setGrades(calificacionEliminada);
+    }
     console.log(`Eliminar calificación con ID: ${id}`);
   };
 
@@ -64,27 +74,33 @@ const GradesStudents = () => {
   const handleAddOrUpdateGrade = (e) => {
     e.preventDefault();
     if (
-      newGrade.studentId &&
-      newGrade.courseId &&
-      newGrade.grade &&
-      newGrade.evaluationDate
+      newGrade.student_id &&
+      newGrade.course_id &&
+      newGrade.qualification &&
+      newGrade.evaluation_date
     ) {
       if (currentGrade) {
         setGrades(
-          grades.map((grade) =>
-            grade.id === currentGrade.id ? newGrade : grade
-          )
+          grades.map((grade) =>{
+            if(grade.id === currentGrade.id){
+              actulizarCalificacion(newGrade)
+              return newGrade
+            }
+             return grade
+          })
         );
       } else {
+        postQualification()
+        console.log(newGrade)
         setGrades([...grades, { ...newGrade, id: grades.length + 1 }]);
       }
       closeModal();
       setNewGrade({
         id: "",
-        studentId: "",
-        courseId: "",
-        grade: "",
-        evaluationDate: "",
+        student_id: "",
+        course_id: "",
+        qualification: "",
+        evaluation_date: "",
       });
     } else {
       alert("Por favor completa todos los campos.");
@@ -92,10 +108,11 @@ const GradesStudents = () => {
   };
 
   const columns = [
-    { label: "Estudiante ID", accessor: "studentId" },
-    { label: "Curso ID", accessor: "courseId" },
-    { label: "Calificación", accessor: "grade" },
-    { label: "Fecha de Evaluación", accessor: "evaluationDate" },
+    {label: "ID", accessor: "id" },
+    { label: "Estudiante ID", accessor: "student_id" },
+    { label: "Curso ID", accessor: "course_id" },
+    { label: "Calificación", accessor: "qualification" },
+    { label: "Fecha de Evaluación", accessor: "evaluation_date" },
     {
       label: "Acciones",
       accessor: "acciones",
@@ -134,10 +151,10 @@ const GradesStudents = () => {
     grades.forEach((grade) => {
       const gradeData = [
         grade.id,
-        grade.studentId,
-        grade.courseId,
-        grade.grade,
-        grade.evaluationDate,
+        grade.student_id,
+        grade.course_id,
+        grade.qualification,
+        grade.evaluation_date,
       ];
       tableRows.push(gradeData);
     });
@@ -183,8 +200,8 @@ const GradesStudents = () => {
             </label>
             <input
               type="text"
-              name="studentId"
-              value={newGrade.studentId}
+              name="student_id"
+              value={newGrade.student_id}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               required
@@ -196,8 +213,8 @@ const GradesStudents = () => {
             </label>
             <input
               type="text"
-              name="courseId"
-              value={newGrade.courseId}
+              name="course_id"
+              value={newGrade.course_id}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               required
@@ -209,8 +226,8 @@ const GradesStudents = () => {
             </label>
             <input
               type="number"
-              name="grade"
-              value={newGrade.grade}
+              name="qualification"
+              value={newGrade.qualification}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               required
@@ -222,8 +239,8 @@ const GradesStudents = () => {
             </label>
             <input
               type="date"
-              name="evaluationDate"
-              value={newGrade.evaluationDate}
+              name="evaluation_date"
+              value={newGrade.evaluation_date}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               required
