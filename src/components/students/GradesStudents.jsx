@@ -9,10 +9,14 @@ import ReusableModal from "../ReusableModal";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import {postCalificacion, getCalificacion, updateCalificacion, deleteCalificacion}  from "../../services/GradesStudent"
+import {getStudents} from "../../services/studenstService";
+import {getCourses} from "../../services/coursesService";
 
 const GradesStudents = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentGrade, setCurrentGrade] = useState(null);
+  const [estudiantes, setEstudiantes] = useState([])
+  const [cursos, setCursos] = useState([])
   const [newGrade, setNewGrade] = useState({
     student_id: "",
     course_id: "",
@@ -20,23 +24,36 @@ const GradesStudents = () => {
     evaluation_date: "",
   });
 
-
-  const [grades, setGrades] = useState([
-      
-  ]);
+  const [grades, setGrades] = useState([]);
 
   useEffect(() => {
-    const obtenerCalificacion = async ()=>{
-      const calificacionAsignada = await getCalificacion()
-      console.log(calificacionAsignada)
-      setGrades(calificacionAsignada)
+    const obtenerCalificacionYEstudiantes = async ()=>{
+      const calificacionAsignada = await getCalificacion();
+      const estudianteAsignado = await getStudents();
+      const cursoAsignado = await getCourses();
+      setEstudiantes(estudianteAsignado);
+      setCursos(cursoAsignado);
+      const dataEstudiantesYCuros = calificacionAsignada.map((grades) => {
+        const estudianteDatos = estudianteAsignado.find(
+          (estudiante)=>estudiante.id === grades.student_id
+        );
+        const  cursoDatos = cursoAsignado.find(
+          (curso) => curso.id === grades.course_id
+        );
+        console.log(estudianteDatos, cursoDatos)
+        return {
+          ...grades,
+          student_id: estudianteDatos.full_name, course_id: cursoDatos.course_name
+
+        };
+      });
+      setGrades(dataEstudiantesYCuros);
    }
-    obtenerCalificacion()
-    //console.log(grades)
+    obtenerCalificacionYEstudiantes()
   }, [])
 
   const postQualification = async ()=>{
-    await postCalificacion(newGrade)
+    await postCalificacion( newGrade)
   }
 
   const actulizarCalificacion = async (actualizar)=>{
@@ -109,8 +126,8 @@ const GradesStudents = () => {
 
   const columns = [
     {label: "ID", accessor: "id" },
-    { label: "Estudiante ID", accessor: "student_id" },
-    { label: "Curso ID", accessor: "course_id" },
+    { label: "Estudiante ", accessor: "student_id" },
+    { label: "Curso ", accessor: "course_id" },
     { label: "Calificación", accessor: "qualification" },
     { label: "Fecha de Evaluación", accessor: "evaluation_date" },
     {
@@ -196,29 +213,47 @@ const GradesStudents = () => {
         <form onSubmit={handleAddOrUpdateGrade} className="space-y-4 m-3">
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Estudiante ID
+              Estudiante 
             </label>
-            <input
-              type="text"
-              name="student_id"
+            <select
+              name="student_id" 
               value={newGrade.student_id}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm  p-1"
               required
-            />
+             >
+              <option value="">Seleccione un estudiante: </option>
+              {estudiantes
+                ? estudiantes.map((estudiante)=>(
+                  <option value={estudiante.id} key={estudiante.full_name}>
+                    {estudiante.full_name}
+                  </option>
+                ))
+                :null
+              }
+            </select>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Curso ID
+              Curso 
             </label>
-            <input
-              type="text"
-              name="course_id"
+            <select
+              name="course_id" 
               value={newGrade.course_id}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm  p-1"
               required
-            />
+             >
+              <option value="">Seleccione un curso: </option>
+              {cursos
+                ? cursos.map((curso)=>(
+                  <option value={curso.id} key={curso.course_name}>
+                    {curso.course_name}
+                  </option>
+                ))
+                :null
+              }
+            </select>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
