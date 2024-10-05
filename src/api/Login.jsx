@@ -1,7 +1,29 @@
 import { Input } from "../components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import  login  from "../services/authServices";
+import React, { useState } from "react";
 
 export default function Login() {
+  const navigate = useNavigate();
+
+  const [username, setUsername] = useState(''); 
+  const [password, setPassword] = useState(''); 
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const credentials = { username, password };
+      const response = await login(credentials);
+      console.log(response + "siiii lo haceeeee");
+      localStorage.setItem("token", response.data.token);
+      navigate("/adminLayout");
+    } catch (error) {
+      setError("credenciales incorrectas re odioooooo");
+    }
+  };
+
   return (
     <div className="flex items-center p-28 justify-center">
       <div className="bg-white px-20 py-20 rounded-3xl border-9 border-transparent shadow-2xl sm:max-w-lg">
@@ -11,22 +33,25 @@ export default function Login() {
           </h2>
         </div>
         <div className="mt-10 sm:mx-auto sm:w-full">
-          <form action="#" method="POST" className="space-y-6">
+          {error && <p className="text-red-500 text-center">{error}</p>}
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
-                htmlFor="email"
+                htmlFor="username"
                 className="block text-base font-medium leading-6 text-gray-900"
               >
-                Email address
+                Username
               </label>
               <div className="mt-2">
                 <Input
-                  id="email"
-                  name="email"
-                  type="email"
+                  id="username"
+                  name="username"
+                  type="username"
                   required
-                  placeholder="user@gestionescolar.com"
-                  autoComplete="email"
+                  placeholder="user.plata"
+                  autoComplete="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
             </div>
@@ -47,7 +72,9 @@ export default function Login() {
                   type="password"
                   placeholder="*********"
                   required
+                  value={password}
                   autoComplete="current-password"
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
             </div>
