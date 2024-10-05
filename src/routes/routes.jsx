@@ -9,6 +9,7 @@ import UserStudents from '../components/students/UserStudents'
 import GradesStudents from '../components/students/GradesStudents'
 import ScheduleAssignment from '../components/students/ScheduleAssignment'
 import CourseManagement from '../components/courses/Courses';
+import UsersTeachers from '../components/teachers/UsersTeachers';
 // import StudentReport from '../components/students/Report'
 
 
@@ -23,6 +24,7 @@ const AppRoutes = () => {
               <Route path="grades" element={<GradesStudents />} />
               <Route path="schedule" element={<ScheduleAssignment />} />
               <Route path="courses" element={<CourseManagement />} />
+              <Route path="teachers" element={<UsersTeachers />} />
                {/* <Route path="report" element={<Report />} /> */}
             {/* Puedes agregar más rutas hijas aquí */}
             </Route>
