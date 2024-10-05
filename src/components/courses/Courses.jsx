@@ -110,6 +110,7 @@ const CourseManagement = () => {
         teacher_id: "",
         schedule: "",
       });
+      window.location.reload();
     } else {
       alert("Por favor completa todos los campos.");
     }

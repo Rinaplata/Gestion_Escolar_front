@@ -105,6 +105,7 @@ const UserStudents = () => {
           phone: "",
           school_grade: "",
         });
+        window.location.reload();
       } catch (error) {
         console.error("Error al agregar o actualizar el estudiante", error);
       }

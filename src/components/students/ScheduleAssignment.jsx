@@ -63,6 +63,7 @@ const ScheduleAssignment = () => {
         startTime: "",
         endTime: "",
       });
+      window.location.reload();
     } else {
       alert("Por favor completa todos los campos.");
     }

@@ -8,15 +8,20 @@ import ReusableTable from "../ReusableTable";
 import ReusableModal from "../ReusableModal";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-import {postCalificacion, getCalificacion, updateCalificacion, deleteCalificacion}  from "../../services/GradesStudent"
-import {getStudents} from "../../services/studenstService";
-import {getCourses} from "../../services/coursesService";
+import {
+  postCalificacion,
+  getCalificacion,
+  updateCalificacion,
+  deleteCalificacion,
+} from "../../services/GradesStudent";
+import { getStudents } from "../../services/studenstService";
+import { getCourses } from "../../services/coursesService";
 
 const GradesStudents = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentGrade, setCurrentGrade] = useState(null);
-  const [estudiantes, setEstudiantes] = useState([])
-  const [cursos, setCursos] = useState([])
+  const [estudiantes, setEstudiantes] = useState([]);
+  const [cursos, setCursos] = useState([]);
   const [newGrade, setNewGrade] = useState({
     student_id: "",
     course_id: "",
@@ -27,7 +32,7 @@ const GradesStudents = () => {
   const [grades, setGrades] = useState([]);
 
   useEffect(() => {
-    const obtenerCalificacionYEstudiantes = async ()=>{
+    const obtenerCalificacionYEstudiantes = async () => {
       const calificacionAsignada = await getCalificacion();
       const estudianteAsignado = await getStudents();
       const cursoAsignado = await getCourses();
@@ -35,42 +40,42 @@ const GradesStudents = () => {
       setCursos(cursoAsignado);
       const dataEstudiantesYCuros = calificacionAsignada.map((grades) => {
         const estudianteDatos = estudianteAsignado.find(
-          (estudiante)=>estudiante.id === grades.student_id
+          (estudiante) => estudiante.id === grades.student_id
         );
-        const  cursoDatos = cursoAsignado.find(
+        const cursoDatos = cursoAsignado.find(
           (curso) => curso.id === grades.course_id
         );
-        console.log(estudianteDatos, cursoDatos)
+        console.log(estudianteDatos, cursoDatos);
         return {
           ...grades,
-          student_id: estudianteDatos.full_name, course_id: cursoDatos.course_name
-
+          student_id: estudianteDatos.full_name,
+          course_id: cursoDatos.course_name,
         };
       });
       setGrades(dataEstudiantesYCuros);
-   }
-    obtenerCalificacionYEstudiantes()
-  }, [])
+    };
+    obtenerCalificacionYEstudiantes();
+  }, []);
 
-  const postQualification = async ()=>{
-    await postCalificacion( newGrade)
-  }
+  const postQualification = async () => {
+    await postCalificacion(newGrade);
+  };
 
-  const actulizarCalificacion = async (actualizar)=>{
-    await updateCalificacion(actualizar)
-  }
+  const actulizarCalificacion = async (actualizar) => {
+    await updateCalificacion(actualizar);
+  };
 
   const handleUpdate = (id) => {
     const gradeToEdit = grades.find((grade) => grade.id === id);
-    
+
     setCurrentGrade(gradeToEdit);
     setNewGrade(gradeToEdit);
     openModal();
   };
 
   const handleDelete = (id) => {
-    const calificacionEliminada = grades.filter((grade)=> grade.id !== id)
-    if(calificacionEliminada.length !== grades.length){
+    const calificacionEliminada = grades.filter((grade) => grade.id !== id);
+    if (calificacionEliminada.length !== grades.length) {
       deleteCalificacion(id);
       setGrades(calificacionEliminada);
     }
@@ -98,17 +103,16 @@ const GradesStudents = () => {
     ) {
       if (currentGrade) {
         setGrades(
-          grades.map((grade) =>{
-            if(grade.id === currentGrade.id){
-              actulizarCalificacion(newGrade)
-              return newGrade
+          grades.map((grade) => {
+            if (grade.id === currentGrade.id) {
+              actulizarCalificacion(newGrade);
+              return newGrade;
             }
-             return grade
+            return grade;
           })
         );
       } else {
-        postQualification()
-        console.log(newGrade)
+        postQualification();
         setGrades([...grades, { ...newGrade, id: grades.length + 1 }]);
       }
       closeModal();
@@ -119,13 +123,14 @@ const GradesStudents = () => {
         qualification: "",
         evaluation_date: "",
       });
+      window.location.reload();
     } else {
       alert("Por favor completa todos los campos.");
     }
   };
 
   const columns = [
-    {label: "ID", accessor: "id" },
+    { label: "ID", accessor: "id" },
     { label: "Estudiante ", accessor: "student_id" },
     { label: "Curso ", accessor: "course_id" },
     { label: "Calificación", accessor: "qualification" },
@@ -213,46 +218,44 @@ const GradesStudents = () => {
         <form onSubmit={handleAddOrUpdateGrade} className="space-y-4 m-3">
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Estudiante 
+              Estudiante
             </label>
             <select
-              name="student_id" 
+              name="student_id"
               value={newGrade.student_id}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm  p-1"
               required
-             >
+            >
               <option value="">Seleccione un estudiante: </option>
               {estudiantes
-                ? estudiantes.map((estudiante)=>(
-                  <option value={estudiante.id} key={estudiante.full_name}>
-                    {estudiante.full_name}
-                  </option>
-                ))
-                :null
-              }
+                ? estudiantes.map((estudiante) => (
+                    <option value={estudiante.id} key={estudiante.full_name}>
+                      {estudiante.full_name}
+                    </option>
+                  ))
+                : null}
             </select>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Curso 
+              Curso
             </label>
             <select
-              name="course_id" 
+              name="course_id"
               value={newGrade.course_id}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm  p-1"
               required
-             >
+            >
               <option value="">Seleccione un curso: </option>
               {cursos
-                ? cursos.map((curso)=>(
-                  <option value={curso.id} key={curso.course_name}>
-                    {curso.course_name}
-                  </option>
-                ))
-                :null
-              }
+                ? cursos.map((curso) => (
+                    <option value={curso.id} key={curso.course_name}>
+                      {curso.course_name}
+                    </option>
+                  ))
+                : null}
             </select>
           </div>
           <div>
@@ -294,11 +297,7 @@ const GradesStudents = () => {
         </form>
       </ReusableModal>
 
-      <ReusableTable
-        title="Calificaciones"
-        columns={columns}
-        data={grades}
-      />
+      <ReusableTable title="Calificaciones" columns={columns} data={grades} />
     </div>
   );
 };
