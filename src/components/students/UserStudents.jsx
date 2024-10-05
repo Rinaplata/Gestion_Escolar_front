@@ -205,7 +205,7 @@ const UserStudents = () => {
         onClose={closeModal}
         title={currentStudent ? "Actualizar Estudiante" : "Agregar Estudiante"}
       >
-        <form onSubmit={handleAddOrUpdateStudent} className="space-y-4">
+        <form onSubmit={handleAddOrUpdateStudent} className="space-y-4 m-3">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Nombre Completo
@@ -215,7 +215,7 @@ const UserStudents = () => {
               name="full_name"
               value={newStudent.full_name}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
               placeholder="Ingresa el nombre completo"
               required
             />
@@ -230,7 +230,7 @@ const UserStudents = () => {
               name="date_birth"
               value={newStudent.date_birth}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm  p-1"
               required
             />
           </div>
@@ -243,7 +243,7 @@ const UserStudents = () => {
               name="gendre"
               value={newStudent.gendre}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm  p-1"
             >
               <option value="">Selecciona el género</option>
               <option value="Masculino">Masculino</option>
@@ -261,7 +261,7 @@ const UserStudents = () => {
               name="address"
               value={newStudent.address}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm  p-1"
               placeholder="Ingresa la dirección"
               required
             />
@@ -275,7 +275,7 @@ const UserStudents = () => {
               name="phone"
               value={newStudent.phone}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm  p-1"
               placeholder="Ingresa el teléfono"
               required
             />
@@ -289,7 +289,7 @@ const UserStudents = () => {
               name="email"
               value={newStudent.email}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm  p-1"
               placeholder="Ingresa el correo electrónico"
               required
             />
@@ -303,7 +303,7 @@ const UserStudents = () => {
               name="school_grade"
               value={newStudent.school_grade}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm  p-1"
               placeholder="Ingresa el grado escolar"
               required
             />
