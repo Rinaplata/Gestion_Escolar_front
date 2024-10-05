@@ -217,7 +217,7 @@ const CourseManagement = () => {
         onClose={closeModal}
         title={currentCourses ? "Actualizar Asignación" : "Asignar Curso"}
       >
-        <form onSubmit={handleAddOrUpdateAssignment} className="space-y-4">
+        <form onSubmit={handleAddOrUpdateAssignment} className="space-y-4 m-3">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Nombre del Curso
@@ -227,7 +227,7 @@ const CourseManagement = () => {
               name="course_name"
               value={newCourse.course_name}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
               required
             />
           </div>
@@ -240,7 +240,7 @@ const CourseManagement = () => {
               name="description"
               value={newCourse.description}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
               required
             />
           </div>
@@ -252,7 +252,7 @@ const CourseManagement = () => {
               name="teacher_id"
               value={newCourse.teacher_id}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
               required
             >
               <option value="">Selecciona un profesor</option>
@@ -274,7 +274,7 @@ const CourseManagement = () => {
               name="schedule"
               value={newCourse.schedule}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
               required
             />
           </div>

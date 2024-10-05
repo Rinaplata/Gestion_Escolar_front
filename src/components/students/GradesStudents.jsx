@@ -193,7 +193,7 @@ const GradesStudents = () => {
           currentGrade ? "Actualizar Calificación" : "Agregar Calificación"
         }
       >
-        <form onSubmit={handleAddOrUpdateGrade} className="space-y-4">
+        <form onSubmit={handleAddOrUpdateGrade} className="space-y-4 m-3">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Estudiante ID
@@ -203,7 +203,7 @@ const GradesStudents = () => {
               name="student_id"
               value={newGrade.student_id}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm  p-1"
               required
             />
           </div>
@@ -216,7 +216,7 @@ const GradesStudents = () => {
               name="course_id"
               value={newGrade.course_id}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm  p-1"
               required
             />
           </div>
@@ -229,7 +229,7 @@ const GradesStudents = () => {
               name="qualification"
               value={newGrade.qualification}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm  p-1"
               required
             />
           </div>
@@ -242,7 +242,7 @@ const GradesStudents = () => {
               name="evaluation_date"
               value={newGrade.evaluation_date}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
               required
             />
           </div>

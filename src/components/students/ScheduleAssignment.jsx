@@ -168,7 +168,7 @@ const ScheduleAssignment = () => {
         onClose={closeModal}
         title={currentAssignment ? "Actualizar Asignación" : "Asignar Curso"}
       >
-        <form onSubmit={handleAddOrUpdateAssignment} className="space-y-4">
+        <form onSubmit={handleAddOrUpdateAssignment} className="space-y-4 m-3">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Estudiante ID
@@ -178,7 +178,7 @@ const ScheduleAssignment = () => {
               name="studentId"
               value={newAssignment.studentId}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
               required
             />
           </div>
@@ -191,7 +191,7 @@ const ScheduleAssignment = () => {
               name="courseId"
               value={newAssignment.courseId}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
               required
             />
           </div>
@@ -203,7 +203,7 @@ const ScheduleAssignment = () => {
               name="day"
               value={newAssignment.day}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
               required
             >
               <option value="">Selecciona un día</option>
@@ -223,7 +223,7 @@ const ScheduleAssignment = () => {
               name="startTime"
               value={newAssignment.startTime}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
               required
             />
           </div>
@@ -236,7 +236,7 @@ const ScheduleAssignment = () => {
               name="endTime"
               value={newAssignment.endTime}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
               required
             />
           </div>
