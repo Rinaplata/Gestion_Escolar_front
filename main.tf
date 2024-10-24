@@ -11,7 +11,6 @@ terraform {
 
 provider "azurerm" {
   features {}
-  use_cli_auth = true
 }
 
 resource "azurerm_resource_group" "existing" {
