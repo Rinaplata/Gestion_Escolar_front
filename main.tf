@@ -33,7 +33,7 @@ data "azurerm_resource_group" "existing" {
   name     = "gestion_escolar"
 }
 
-data "azurerm_container_registry" "imagenes_perso" {
+data "azurerm_container_registry" "existing" {
   name                = "miACRuniversidad"
   resource_group_name = data.azurerm_resource_group.existing.name
 }
@@ -42,13 +42,13 @@ resource "null_resource" "docker_push" {
   provisioner "local-exec" {
     command = <<EOT
       
-      az acr login --name ${azurerm_container_registry.imagenes_perso.name}
-      docker tag gestionescolar-front:latest ${azurerm_container_registry.imagenes_perso.login_server}/gestionescolar-front:latest
-      docker push ${azurerm_container_registry.imagenes_perso.login_server}/gestionescolar-front:latest
+      az acr login --name ${azurerm_container_registry.existing.name}
+      docker tag gestionescolar-front:latest ${azurerm_container_registry.existing.login_server}/gestionescolar-front:latest
+      docker push ${azurerm_container_registry.existing.login_server}/gestionescolar-front:latest
     EOT
   }
 
-  depends_on = [azurerm_container_registry.imagenes_perso]
+  depends_on = [azurerm_container_registry.existing]
 }
 
 resource "azurerm_container_group" "gestionescolar" {
@@ -59,7 +59,7 @@ resource "azurerm_container_group" "gestionescolar" {
 
   container {
     name   = "gestionescolar-front-container"
-    image  = "${azurerm_container_registry.imagenes_perso.login_server}/gestionescolar-front:latest"
+    image  = "${azurerm_container_registry.existing.login_server}/gestionescolar-front:latest"
     cpu    = "0.5"
     memory = "1.5"
 
@@ -70,10 +70,10 @@ resource "azurerm_container_group" "gestionescolar" {
   }
 
   image_registry_credential {
-      server   = azurerm_container_registry.imagenes_perso.login_server
-      username = azurerm_container_registry.imagenes_perso.admin_username
-      password = azurerm_container_registry.imagenes_perso.admin_password
+      server   = azurerm_container_registry.existing.login_server
+      username = azurerm_container_registry.existing.admin_username
+      password = azurerm_container_registry.existing.admin_password
   }
 
-  depends_on = [azurerm_container_registry.imagenes_perso]
+  depends_on = [azurerm_container_registry.existing]
 }
