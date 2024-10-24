@@ -76,5 +76,13 @@ resource "azurerm_container_group" "gestionescolar" {
     username = azurerm_container_registry.imagenes_perso.admin_username
     password = azurerm_container_registry.imagenes_perso.admin_password
   }
+  depends_on = [azurerm_container_registry.imagenes_perso]
+}
 
+output "acr_username" {
+  value = azurerm_container_registry.imagenes_perso.admin_username
+}
+
+output "acr_password" {
+  value = azurerm_container_registry.imagenes_perso.admin_password
 }
