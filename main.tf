@@ -75,5 +75,5 @@ resource "azurerm_container_group" "gestionescolar" {
       password = data.azurerm_container_registry.existing.admin_password
   }
 
-  depends_on = [data.azurerm_container_registry.existing]
+  depends_on = [null_resource.docker_push,data.azurerm_container_registry.existing]
 }
