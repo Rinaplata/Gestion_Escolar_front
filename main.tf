@@ -50,6 +50,9 @@ resource "null_resource" "docker_push" {
     EOT
   }
 
+  depends_on = [azurerm_container_registry.imagenes_perso]
+}
+
 resource "azurerm_container_group" "gestionescolar" {
   name                = "gestionescolar-container-group"
   location            = data.azurerm_resource_group.existing.location
@@ -67,6 +70,3 @@ resource "azurerm_container_group" "gestionescolar" {
       protocol = "TCP"
     }
   }
-
-  depends_on = [azurerm_container_registry.imagenes_perso]
-}
