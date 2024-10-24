@@ -13,7 +13,7 @@ provider "azurerm" {
   features {}
 }
 
-resource "azurerm_resource_group" "existing" {
+data "azurerm_resource_group" "existing" {
   name     = "gestion_escolar"
 }
 
