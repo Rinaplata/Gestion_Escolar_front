@@ -9,16 +9,16 @@ terraform {
   required_version = ">= 1.1.0"
 }
 
+provider "azurerm" {
+  features {}
+}
+
 resource "null_resource" "az_login" {
   provisioner "local-exec" {
     command = <<EOT
       az login --username "${azure_username}" --password "${azure_password}"
     EOT
   }
-}
-
-provider "azurerm" {
-  features {}
 }
 
 data "azurerm_resource_group" "existing" {
