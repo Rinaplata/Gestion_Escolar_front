@@ -16,7 +16,7 @@ provider "azurerm" {
 resource "null_resource" "az_login" {
   provisioner "local-exec" {
     command = <<EOT
-      az login --username "${azure_username}" --password "${azure_password}"
+      az login --username "${var.azure_username}" --password "${var.azure_password}"
     EOT
   }
 }
