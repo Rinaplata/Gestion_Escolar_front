@@ -70,4 +70,11 @@ resource "azurerm_container_group" "gestionescolar" {
       protocol = "TCP"
     }
   }
+
+  image_registry_credential {
+    server   = azurerm_container_registry.imagenes_perso.login_server
+    username = azurerm_container_registry.imagenes_perso.admin_username
+    password = azurerm_container_registry.imagenes_perso.admin_password
+  }
+
 }
