@@ -45,13 +45,26 @@ resource "null_resource" "docker_push" {
     command = <<EOT
       
       az acr login --name ${azurerm_container_registry.imagenes_perso.name}
-      
-     
-      docker build -t ${azurerm_container_registry.imagenes_perso.login_server}/gestionescolar-front:latest .
-
-     
       docker push ${azurerm_container_registry.imagenes_perso.login_server}/gestionescolar-front:latest
     EOT
+  }
+
+resource "azurerm_container_group" "gestionescolar" {
+  name                = "gestionescolar-container-group"
+  location            = data.azurerm_resource_group.existing.location
+  resource_group_name = data.azurerm_resource_group.existing.name
+  os_type             = "Linux"
+
+  container {
+    name   = "gestionescolar-front-container"
+    image  = "${azurerm_container_registry.acr.login_server}/gestionescolar-front:latest"
+    cpu    = "0.5"
+    memory = "1.5"
+
+    ports {
+      port     = 80
+      protocol = "TCP"
+    }
   }
 
   depends_on = [azurerm_container_registry.imagenes_perso]
