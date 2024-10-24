@@ -3,12 +3,16 @@ pipeline {
 
   stages {
     stage('Clonar Repo'){
-      git branch: 'main', url: 'https://github.com/eldelahoz/Gestion_Escolar_front.git'
+      steps{
+        git branch: 'main', url: 'https://github.com/eldelahoz/Gestion_Escolar_front.git'  
+      }
     }
     
     stage('Construir Imagen Docker'){
-      script {
+      steps{
+        script {
         def image = docker.build("gestionescolar-front")
+        }
       }
     }
   }
