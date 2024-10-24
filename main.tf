@@ -33,11 +33,9 @@ data "azurerm_resource_group" "existing" {
   name     = "gestion_escolar"
 }
 
-resource "azurerm_container_registry" "imagenes_perso" {
+data "azurerm_container_registry" "imagenes_perso" {
   name                = "miACRuniversidad"
   resource_group_name = data.azurerm_resource_group.existing.name
-  location            = data.azurerm_resource_group.existing.location
-  sku                 = "Basic"
 }
 
 resource "null_resource" "docker_push" {
