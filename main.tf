@@ -61,7 +61,7 @@ resource "azurerm_container_group" "gestionescolar" {
 
   container {
     name   = "gestionescolar-front-container"
-    image  = "${azurerm_container_registry.acr.login_server}/gestionescolar-front:latest"
+    image  = "${azurerm_container_registry.imagenes_perso.login_server}/gestionescolar-front:latest"
     cpu    = "0.5"
     memory = "1.5"
 
