@@ -40,8 +40,7 @@ pipeline {
 
     stage('Terraform Apply') {
         steps {
-            input '¿Quieres aplicar el plan de Terraform?'
-            sh 'terraform apply -auto-approve tfplan'
+            sh 'terraform apply -auto-approve'
         }
     }
   }
