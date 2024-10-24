@@ -9,6 +9,14 @@ terraform {
   required_version = ">= 1.1.0"
 }
 
+variable "azure_username" {
+  type = string
+}
+
+variable "azure_password" {
+  type = string
+}
+
 provider "azurerm" {
   features {}
 }
