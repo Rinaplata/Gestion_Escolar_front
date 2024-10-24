@@ -70,3 +70,4 @@ resource "azurerm_container_group" "gestionescolar" {
       protocol = "TCP"
     }
   }
+}
