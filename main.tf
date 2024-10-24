@@ -43,7 +43,7 @@ resource "null_resource" "docker_push" {
     command = <<EOT
       
       az acr login --name ${data.azurerm_container_registry.existing.name}
-      docker tag gestionescolar-front:latest ${data.azurerm_container_registry.existing.login_server}/gestionescolar-front:latest
+      docker build -t ${data.azurerm_container_registry.existing.login_server}/gestionescolar-front:latest .
       docker push ${data.azurerm_container_registry.existing.login_server}/gestionescolar-front:latest
     EOT
   }
