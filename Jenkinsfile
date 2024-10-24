@@ -1,7 +1,9 @@
 pipeline {
   agent any
-  export TF_VAR_azure_username=env.azure_username
-  export TF_VAR_azure_password=env.azure_password
+  environment {
+        TF_VAR_azure_username = "${env.azure_username}"
+        TF_VAR_azure_password = "${env.azure_password}"
+    }
   
   stages {
     stage('Clonar Repo'){
