@@ -70,9 +70,5 @@ resource "azurerm_container_group" "gestionescolar" {
       protocol = "TCP"
     }
   }
-
-  image_registry_credential {
-    server   = azurerm_container_registry.imagenes_perso.login_server
-  }
   depends_on = [azurerm_container_registry.imagenes_perso]
 }
