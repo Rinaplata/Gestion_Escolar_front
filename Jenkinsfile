@@ -31,6 +31,12 @@ pipeline {
                 sh 'terraform validate'
             }
         }
+
+    stage('Terraform Import') {
+            steps {
+                sh 'terraform import azurerm_container_group.gestionescolar gestionescolar-container-group || true'
+            }
+        }
     
     stage('Terraform Plan') {
         steps {
