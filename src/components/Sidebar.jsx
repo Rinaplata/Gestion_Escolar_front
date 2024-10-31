@@ -139,14 +139,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         Calificaciones
                       </NavLink>
                     </li>
-                    {/* <li>
+                    <li>
                       <NavLink
                         to="/adminLayout/schedule"
                         className="block py-2 px-4 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-meta-4 dark:text-white"
                       >
-                        Horarios y Asignaciones de cursos
+                        Asignaciones de cursos
                       </NavLink>
-                    </li> */}
+                    </li>
                     {/* <li>
                     <NavLink
                       to="/adminLayout/report"

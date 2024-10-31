@@ -66,7 +66,10 @@ const CourseManagement = () => {
     course_name: "",
     description: "",
     teacher_id: "",
-    schedule: "",
+    start_date: "",
+    end_date: "",
+    start_time: "",
+    end_time: "",
   });
 
   const openModal = () => setIsModalOpen(true);
@@ -86,7 +89,10 @@ const CourseManagement = () => {
       newCourse.course_name &&
       newCourse.description &&
       newCourse.teacher_id &&
-      newCourse.schedule
+      newCourse.start_date &&
+      newCourse.end_date &&
+      newCourse.start_time &&
+      newCourse.end_time
     ) {
       if (currentCourses) {
         setCursos(
@@ -108,7 +114,10 @@ const CourseManagement = () => {
         course_name: "",
         description: "",
         teacher_id: "",
-        schedule: "",
+        start_date: "",
+        end_date: "",
+        start_time: "",
+        end_time: "",
       });
       window.location.reload();
     } else {
@@ -138,7 +147,10 @@ const CourseManagement = () => {
     { label: "Nombre del Curso", accessor: "course_name" },
     { label: "Descripcion", accessor: "description" },
     { label: "Profesor Asignado", accessor: "teacher_id" },
-    { label: "Horario Curso", accessor: "schedule" },
+    { label: "Fecha Inicio", accessor: "start_date" },
+    { label: "Fecha Fin", accessor: "end_date" },
+    { label: "Hora Inicio", accessor: "start_time" },
+    { label: "Hora Fin", accessor: "end_time" },
     {
       label: "Acciones",
       accessor: "acciones",
@@ -170,7 +182,10 @@ const CourseManagement = () => {
       "Nombre del Curso",
       "Descripcion",
       "Profesor Asignado",
-      "Horario Curso",
+      "Fecha Inicio",
+      "Fecha Fin",
+      "Hora Inicio",
+      "Hora Fin",
     ];
     const tableRows = [];
 
@@ -268,12 +283,51 @@ const CourseManagement = () => {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Horario del Curso
+              Fecha Inicio
             </label>
             <input
-              type="text"
-              name="schedule"
-              value={newCourse.schedule}
+              type="date"
+              name="start_date"
+              value={newCourse.start_date}
+              onChange={handleInputChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Fecha Fin
+            </label>
+            <input
+              type="date"
+              name="end_date"
+              value={newCourse.end_date}
+              onChange={handleInputChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Hora Inicio
+            </label>
+            <input
+              type="time"
+              name="start_time"
+              value={newCourse.start_time}
+              onChange={handleInputChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Hora Fin
+            </label>
+            <input
+              type="time"
+              name="end_time"
+              value={newCourse.end_time}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
               required
