@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   PencilSquareIcon,
   TrashIcon,
@@ -8,10 +8,15 @@ import ReusableTable from "../ReusableTable";
 import ReusableModal from "../ReusableModal";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
+import getSchedule from "../../services/schedule";
+import { getStudents } from "../../services/studenstService";
+import { getCourses } from "../../services/coursesService";
 
 const ScheduleAssignment = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentAssignment, setCurrentAssignment] = useState(null);
+  const [students, setStudents] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [assignments, setAssignments] = useState([]);
   const [newAssignment, setNewAssignment] = useState({
     id: "",
@@ -22,6 +27,44 @@ const ScheduleAssignment = () => {
     start_time: "",
     end_time: "",
   });
+
+  // Fetch students from API
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const scheduleData = await getSchedule();
+        const studentsData = await getStudents();
+        const coursesData = await getCourses();
+
+        const mappedAssignments = scheduleData.map((schedule) => {
+          const student = studentsData.find(
+            (student) => student.id === schedule.student_id
+          );
+          const course = coursesData.find(
+            (course) => course.id === schedule.course_id
+          );
+          console.log(student);
+          console.log(course);
+          return {
+            id: schedule ? schedule.id : "",
+            student_id: student ? student.full_name : "",
+            course_id: course ? course.course_name : "",
+            start_date: course ? course.start_date : "",
+            end_date: course ? course.end_date : "",
+            start_time: course ? course.start_time : "",
+            end_time: course ? course.end_time : "",
+          };
+        });
+
+        setAssignments(mappedAssignments);
+        setStudents(studentsData);
+        setCourses(coursesData);
+      } catch (error) {
+        console.error("Error al obtener los estudiantes", error);
+      }
+    };
+    fetchStudents();
+  }, []);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
@@ -187,13 +230,13 @@ const ScheduleAssignment = () => {
               required
             >
               <option value="">Selecciona un estudiante</option>
-              {/* {profesores
-                ? profesores.map((profesor) => (
-                    <option value={profesor.id} key={profesor.full_name}>
-                      {profesor.full_name}
+              {students
+                ? students.map((student) => (
+                    <option value={student.id} key={student.full_name}>
+                      {student.full_name}
                     </option>
                   ))
-                : null} */}
+                : null}
             </select>
           </div>
           <div>
@@ -208,13 +251,13 @@ const ScheduleAssignment = () => {
               required
             >
               <option value="">Selecciona un curso</option>
-              {/* {profesores
-                ? profesores.map((profesor) => (
-                    <option value={profesor.id} key={profesor.full_name}>
-                      {profesor.full_name}
+              {courses
+                ? courses.map((course) => (
+                    <option value={course.id} key={course.course_name}>
+                      {course.course_name}
                     </option>
                   ))
-                : null} */}
+                : null}
             </select>
           </div>
           <div className="mt-4">
