@@ -1,10 +1,9 @@
-import React from 'react';
-import { jsPDF } from 'jspdf';
-import 'jspdf-autotable'; 
+import React from "react";
+import { jsPDF } from "jspdf";
+import "jspdf-autotable";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-const ReusableTable = ({ data = [], columns = [], title=[] }) => {
-
+const ReusableTable = ({ data = [], columns = [], title = [] }) => {
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-4">{title}</h1>
@@ -25,7 +24,10 @@ const ReusableTable = ({ data = [], columns = [], title=[] }) => {
           {data.map((row) => (
             <tr key={row.id} className="border-b">
               {columns.map((column) => (
-                <td key={column.accessor} className="px-4 py-2 text-gray-600">
+                <td
+                  key={column.accessor}
+                  className="px-4 py-2 text-gray-600 text-center"
+                >
                   {column.render ? column.render(row) : row[column.accessor]}
                 </td>
               ))}

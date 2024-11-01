@@ -140,7 +140,7 @@ const ScheduleAssignment = () => {
       label: "Acciones",
       accessor: "acciones",
       render: (row) => (
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center justify-center space-x-2">
           <button
             onClick={() => handleUpdate(row.id)}
             className="text-blue-500 hover:text-blue-700"
