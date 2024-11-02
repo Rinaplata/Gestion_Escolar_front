@@ -8,7 +8,12 @@ import ReusableTable from "../ReusableTable";
 import ReusableModal from "../ReusableModal";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-import getSchedule from "../../services/schedule";
+import {
+  deleteSchedule,
+  getSchedule,
+  postSchedule,
+  putSchedule,
+} from "../../services/schedule";
 import { getStudents } from "../../services/studenstService";
 import { getCourses } from "../../services/coursesService";
 
@@ -21,7 +26,9 @@ const ScheduleAssignment = () => {
   const [newAssignment, setNewAssignment] = useState({
     id: "",
     student_id: "",
+    student_name: "",
     course_id: "",
+    course_name: "",
     start_date: "",
     end_date: "",
     start_time: "",
@@ -43,12 +50,13 @@ const ScheduleAssignment = () => {
           const course = coursesData.find(
             (course) => course.id === schedule.course_id
           );
-          console.log(student);
-          console.log(course);
+
           return {
             id: schedule ? schedule.id : "",
-            student_id: student ? student.full_name : "",
-            course_id: course ? course.course_name : "",
+            student_id: schedule ? schedule.student_id : "",
+            student_name: student ? student.full_name : "",
+            course_id: schedule ? schedule.course_id : "",
+            course_name: course ? course.course_name : "",
             start_date: course ? course.start_date : "",
             end_date: course ? course.end_date : "",
             start_time: course ? course.start_time : "",
@@ -77,26 +85,25 @@ const ScheduleAssignment = () => {
     setNewAssignment({ ...newAssignment, [name]: value });
   };
 
-  const handleAddOrUpdateAssignment = (e) => {
+  const handleAddOrUpdateAssignment = async (e) => {
     e.preventDefault();
-    if (
-      newAssignment.student_id &&
-      newAssignment.course_id &&
-      newAssignment.start_date &&
-      newAssignment.end_date &&
-      newAssignment.start_time &&
-      newAssignment.end_time
-    ) {
+    if (newAssignment.student_id && newAssignment.course_id) {
       if (currentAssignment) {
+        await putSchedule(newAssignment);
         setAssignments(
           assignments.map((assignment) =>
             assignment.id === currentAssignment.id ? newAssignment : assignment
           )
         );
       } else {
+        newAssignment.id = assignments?.length + 1;
+        const createSchedule = await postSchedule({
+          student_id: newAssignment.student_id,
+          course_id: newAssignment.course_id,
+        });
         setAssignments([
           ...assignments,
-          { ...newAssignment, id: assignments.length + 1 },
+          { ...createSchedule, id: assignments.length + 1 },
         ]);
       }
       closeModal();
@@ -124,14 +131,19 @@ const ScheduleAssignment = () => {
     openModal();
   };
 
-  const handleDelete = (id) => {
-    setAssignments(assignments.filter((assignment) => assignment.id !== id));
-    console.log(`Eliminar asignación con ID: ${id}`);
+  const handleDelete = async (id) => {
+    try {
+      await deleteSchedule(id);
+      setAssignments(assignments.filter((assignment) => assignment.id !== id));
+      console.log(`Eliminar asignación con ID: ${id}`);
+    } catch (error) {
+      console.log("Error al eliminar la asignación", error);
+    }
   };
 
   const columns = [
-    { label: "Estudiante", accessor: "student_id" },
-    { label: "Curso", accessor: "course_id" },
+    { label: "Estudiante", accessor: "student_name" },
+    { label: "Curso", accessor: "course_name" },
     { label: "Fecha Inicio", accessor: "start_date" },
     { label: "Fecha Fin", accessor: "end_date" },
     { label: "Hora Inicio", accessor: "start_time" },
@@ -174,8 +186,8 @@ const ScheduleAssignment = () => {
 
     assignments.forEach((assignment) => {
       const assignmentData = [
-        assignment.student_id,
-        assignment.course_id,
+        assignment.student_name,
+        assignment.course_name,
         assignment.start_date,
         assignment.end_date,
         assignment.start_time,

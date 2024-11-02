@@ -1,32 +1,31 @@
 import { Input } from "../components";
 import { Link, useNavigate } from "react-router-dom";
-import  login  from "../services/authServices";
-import React, { useState } from "react";
+import getLogin from "../services/authServices";
+import { useState } from "react";
+import { useAuth } from "../components/security/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState(''); 
-  const [password, setPassword] = useState(''); 
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const credentials = { username, password };
-      const response = await login(credentials);
-      
-      if (response.access) {
-        localStorage.setItem("token", response.access);
-        navigate("/adminLayout");
-      } else {
-        setError("No se pudo autenticar. Token no recibido.");
+      const response = await getLogin(credentials);
+      if (response.status === 200) {
+        login(response.data.access, navigate);
+      } else if (response.status === 404) {
+        setError("Error en el servidor");
       }
     } catch (error) {
       setError("Credenciales incorrectas");
     }
-
   };
 
   return (
