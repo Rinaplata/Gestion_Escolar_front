@@ -1,10 +1,10 @@
 import api from "./index.js";
 
-const login = async (credentials) => {
+const getLogin = async (credentials) => {
   try {
     const response = await api.post("login/", credentials);
 
-    return response.data;
+    return { status: response.status, data: response.data };
   } catch (error) {
     console.error(
       "Error en el login",
@@ -14,4 +14,4 @@ const login = async (credentials) => {
   }
 };
 
-export default login;
+export default getLogin;

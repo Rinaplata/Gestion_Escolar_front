@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   PencilSquareIcon,
   TrashIcon,
@@ -8,19 +8,71 @@ import ReusableTable from "../ReusableTable";
 import ReusableModal from "../ReusableModal";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
+import {
+  deleteSchedule,
+  getSchedule,
+  postSchedule,
+  putSchedule,
+} from "../../services/schedule";
+import { getStudents } from "../../services/studenstService";
+import { getCourses } from "../../services/coursesService";
 
 const ScheduleAssignment = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentAssignment, setCurrentAssignment] = useState(null);
+  const [students, setStudents] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [assignments, setAssignments] = useState([]);
   const [newAssignment, setNewAssignment] = useState({
     id: "",
-    studentId: "",
-    courseId: "",
-    day: "",
-    startTime: "",
-    endTime: "",
+    student_id: "",
+    student_name: "",
+    course_id: "",
+    course_name: "",
+    start_date: "",
+    end_date: "",
+    start_time: "",
+    end_time: "",
   });
+
+  // Fetch students from API
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const scheduleData = await getSchedule();
+        const studentsData = await getStudents();
+        const coursesData = await getCourses();
+
+        const mappedAssignments = scheduleData.map((schedule) => {
+          const student = studentsData.find(
+            (student) => student.id === schedule.student_id
+          );
+          const course = coursesData.find(
+            (course) => course.id === schedule.course_id
+          );
+
+          return {
+            id: schedule ? schedule.id : "",
+            student_id: schedule ? schedule.student_id : "",
+            student_name: student ? student.full_name : "",
+            course_id: schedule ? schedule.course_id : "",
+            course_name: course ? course.course_name : "",
+            start_date: course ? course.start_date : "",
+            end_date: course ? course.end_date : "",
+            start_time: course ? course.start_time : "",
+            end_time: course ? course.end_time : "",
+          };
+        });
+
+        setAssignments(mappedAssignments);
+        setStudents(studentsData);
+        setCourses(coursesData);
+      } catch (error) {
+        console.error("Error al obtener los estudiantes", error);
+      }
+    };
+    fetchStudents();
+  }, []);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
@@ -33,35 +85,36 @@ const ScheduleAssignment = () => {
     setNewAssignment({ ...newAssignment, [name]: value });
   };
 
-  const handleAddOrUpdateAssignment = (e) => {
+  const handleAddOrUpdateAssignment = async (e) => {
     e.preventDefault();
-    if (
-      newAssignment.studentId &&
-      newAssignment.courseId &&
-      newAssignment.day &&
-      newAssignment.startTime &&
-      newAssignment.endTime
-    ) {
+    if (newAssignment.student_id && newAssignment.course_id) {
       if (currentAssignment) {
+        await putSchedule(newAssignment);
         setAssignments(
           assignments.map((assignment) =>
             assignment.id === currentAssignment.id ? newAssignment : assignment
           )
         );
       } else {
+        newAssignment.id = assignments?.length + 1;
+        const createSchedule = await postSchedule({
+          student_id: newAssignment.student_id,
+          course_id: newAssignment.course_id,
+        });
         setAssignments([
           ...assignments,
-          { ...newAssignment, id: assignments.length + 1 },
+          { ...createSchedule, id: assignments.length + 1 },
         ]);
       }
       closeModal();
       setNewAssignment({
         id: "",
-        studentId: "",
-        courseId: "",
-        day: "",
-        startTime: "",
-        endTime: "",
+        student_id: "",
+        course_id: "",
+        start_date: "",
+        end_date: "",
+        start_time: "",
+        end_time: "",
       });
       window.location.reload();
     } else {
@@ -78,22 +131,28 @@ const ScheduleAssignment = () => {
     openModal();
   };
 
-  const handleDelete = (id) => {
-    setAssignments(assignments.filter((assignment) => assignment.id !== id));
-    console.log(`Eliminar asignación con ID: ${id}`);
+  const handleDelete = async (id) => {
+    try {
+      await deleteSchedule(id);
+      setAssignments(assignments.filter((assignment) => assignment.id !== id));
+      console.log(`Eliminar asignación con ID: ${id}`);
+    } catch (error) {
+      console.log("Error al eliminar la asignación", error);
+    }
   };
 
   const columns = [
-    { label: "Estudiante ID", accessor: "studentId" },
-    { label: "Curso ID", accessor: "courseId" },
-    { label: "Día", accessor: "day" },
-    { label: "Hora de Inicio", accessor: "startTime" },
-    { label: "Hora de Finalización", accessor: "endTime" },
+    { label: "Estudiante", accessor: "student_name" },
+    { label: "Curso", accessor: "course_name" },
+    { label: "Fecha Inicio", accessor: "start_date" },
+    { label: "Fecha Fin", accessor: "end_date" },
+    { label: "Hora Inicio", accessor: "start_time" },
+    { label: "Hora Fin", accessor: "end_time" },
     {
       label: "Acciones",
       accessor: "acciones",
       render: (row) => (
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center justify-center space-x-2">
           <button
             onClick={() => handleUpdate(row.id)}
             className="text-blue-500 hover:text-blue-700"
@@ -113,25 +172,26 @@ const ScheduleAssignment = () => {
 
   const downloadPDF = () => {
     const doc = new jsPDF();
-    doc.text("Horario y asignación de cursos", 20, 10);
+    doc.text("Asignación de cursos", 20, 10);
 
     const tableColumn = [
-      "id",
-      "studentId",
-      "courseId",
-      "day",
-      "startTime",
-      "endTime",
+      "Estudiante",
+      "Curso",
+      "Fecha Inicio",
+      "Fecha Fin",
+      "Hora Inicio",
+      "Hora Fin",
     ];
     const tableRows = [];
 
     assignments.forEach((assignment) => {
       const assignmentData = [
-        assignment.id,
-        assignment.studentId,
-        assignment.courseId,
-        assignment.grade,
-        assignment.evaluationDate,
+        assignment.student_name,
+        assignment.course_name,
+        assignment.start_date,
+        assignment.end_date,
+        assignment.start_time,
+        assignment.end_time,
       ];
       tableRows.push(assignmentData);
     });
@@ -142,7 +202,7 @@ const ScheduleAssignment = () => {
       startY: 20,
     });
 
-    doc.save("calificaciones.pdf");
+    doc.save("asignacion_cursos_estudiantes.pdf");
   };
 
   return (
@@ -172,74 +232,45 @@ const ScheduleAssignment = () => {
         <form onSubmit={handleAddOrUpdateAssignment} className="space-y-4 m-3">
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Estudiante ID
-            </label>
-            <input
-              type="text"
-              name="studentId"
-              value={newAssignment.studentId}
-              onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Curso ID
-            </label>
-            <input
-              type="text"
-              name="courseId"
-              value={newAssignment.courseId}
-              onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Día
+              Estudiante
             </label>
             <select
-              name="day"
-              value={newAssignment.day}
+              name="student_id"
+              value={newAssignment.student_id}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
               required
             >
-              <option value="">Selecciona un día</option>
-              <option value="Lunes">Lunes</option>
-              <option value="Martes">Martes</option>
-              <option value="Miércoles">Miércoles</option>
-              <option value="Jueves">Jueves</option>
-              <option value="Viernes">Viernes</option>
+              <option value="">Selecciona un estudiante</option>
+              {students
+                ? students.map((student) => (
+                    <option value={student.id} key={student.full_name}>
+                      {student.full_name}
+                    </option>
+                  ))
+                : null}
             </select>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Hora de Inicio
+              Curso
             </label>
-            <input
-              type="time"
-              name="startTime"
-              value={newAssignment.startTime}
+            <select
+              name="course_id"
+              value={newAssignment.course_id}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
               required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Hora de Finalización
-            </label>
-            <input
-              type="time"
-              name="endTime"
-              value={newAssignment.endTime}
-              onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
-              required
-            />
+            >
+              <option value="">Selecciona un curso</option>
+              {courses
+                ? courses.map((course) => (
+                    <option value={course.id} key={course.course_name}>
+                      {course.course_name}
+                    </option>
+                  ))
+                : null}
+            </select>
           </div>
           <div className="mt-4">
             <button
